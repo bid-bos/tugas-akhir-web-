@@ -96,9 +96,9 @@ class Auth extends BaseController
         if ($this->request->isAJAX()) {
             $username = $this->request->getVar('username');
             $password = $this->request->getVar('password');
-    
+
             $validation = \Config\Services::validation();
-    
+
             $doValid = $this->validate([
                 'username' => [
                     'label' => 'Username',
@@ -115,7 +115,7 @@ class Auth extends BaseController
                     ]
                 ]
             ]);
-    
+
             if (!$doValid) {
                 $msg = [
                     'error' => [
@@ -128,8 +128,9 @@ class Auth extends BaseController
                 if ($auth) {
                     session()->set([
                         'isLoggeedin' => true,
-                        'email' => $auth['email'],
-                        'username' => $auth['username'],
+                        'admin_id'    => $auth['id'],       // ID pengguna (opsional)
+                        'admin_name'  => $auth['username'], // Nama admin
+                        'email'       => $auth['email'],    // Email admin
                     ]);
                     $msg = ['success' => 'You have been logged in'];
                 } else {
@@ -145,5 +146,19 @@ class Auth extends BaseController
             echo json_encode($msg);
         }
     }
-    
+
+    public function logout()
+    {
+        // Load session
+        $session = session();
+
+        // Hapus semua data session
+        $session->destroy();
+
+        // Set flashdata untuk pesan sukses
+        $session->setFlashdata('success', 'You have successfully logged out.');
+
+        // Redirect ke halaman login
+        return redirect()->to('/login');
+    }
 }

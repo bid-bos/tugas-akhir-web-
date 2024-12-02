@@ -7,10 +7,10 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th> # </th>
-                    <th> First name </th>
-                    <th> Progress </th>
-                    <th> Amount </th>
+                    <th> No </th>
+                    <th> Name </th>
+                    <th> Pemasukan </th>
+                    <th> Pengeluaran </th>
                     <th> Deadline </th>
                 </tr>
             </thead>

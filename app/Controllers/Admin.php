@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-class Categories extends BaseController
+class Admin extends BaseController
 {
     public function index(): string
     {
-        return view('categories/data');
+        return view('user/data');
     }
 
     public function add()
     {
-        return view('categories/addForm');
+        return view('User/addAdmin');
     }
 }

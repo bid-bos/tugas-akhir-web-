@@ -38,4 +38,8 @@ class User extends BaseController
             'total_user' => $totalusers ? $totalusers['id'] : 0,
         ]);
     }
+    public function add()
+    {
+        return view('User/addAdmin');
+    }
 }

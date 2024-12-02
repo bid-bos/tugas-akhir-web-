@@ -1,7 +1,7 @@
 <?= $this->extend('templates/menu') ?>
 
 <?= $this->section('content') ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
 <div class="statistics-details d-flex align-items-center justify-content-between">
     <!-- Menampilkan total user -->
     <div>
@@ -9,7 +9,6 @@
         <h3 class="rate-percentage" id="total-user"><?= $total_user ?></h3>
     </div>
 
-    <!-- Contoh tambahan statistik lainnya -->
     <div>
         <p class="statistics-title">Page Views</p>
         <h3 class="rate-percentage" id="total_page_views"><?= $totalPageViews ?? 0 ?></h3>
@@ -22,6 +21,9 @@
         <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p>
     </div>
 </div>
+
+<button class="btn btn-success" id="addButton" onclick="window.location='<?= site_url('User/add') ?>'">Add Admin</button>
+
 <!-- tabel user -->
 <div class="card-body">
     <div class="table-responsive pt-3">
@@ -30,7 +32,8 @@
                 <tr>
                     <th colspan="1"> no </th>
                     <th colspan="4"> name </th>
-                    <th colspan="5"> Email </th>
+                    <th colspan="4"> Email </th>
+                    <th colspan="2"> Role </th>
                     <th colspan="2"> Action </th>
                 </tr>
             </thead>
@@ -38,13 +41,30 @@
                 <tr>
                     <td colspan="1"> 1 </td>
                     <td colspan="4"> Herman Beck </td>
-                    <td colspan="5">raya@gmail.com</td>
+                    <td colspan="4">raya@gmail.com</td>
+                    <td colspan="2">Admin</td>
                     <td colspan="2"> 
                         <button type="button" class="btn btn-success btn-rounded btn-icon">
                         <i class="fa fa-user-pen"></i>
                         </button>
                         <button type="button" class="btn btn-danger btn-rounded btn-icon">
-                        <i class="fa fa-trash-alt"></i>
+                        <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="1"> 1 </td>
+                    <td colspan="4"> Herman Beck </td>
+                    <td colspan="4">raya@gmail.com</td>
+                    <td colspan="2">Admin</td>
+                    <td colspan="2"> 
+                        <button type="button" class="btn btn-success btn-rounded btn-icon">
+                        <i class="fa fa-user-pen"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-rounded btn-icon">
+                        <i class="fa fa-trash"></i>
                         </button>
                     </td>
                 </tr>
