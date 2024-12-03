@@ -29,11 +29,17 @@ $routes->group('transaction', ['filter' => 'login'], function($routes) {
 });
 
 // Route untuk sub-fitur: User
-$routes->group('User', ['filter' => 'login'], function($routes) {
-    $routes->get('/', 'User::index');           // Menampilkan daftar user
-    $routes->get('getTotalUsers', 'User::getTotalUsers'); // Mengambil total users
-    $routes->get('add', 'User::add');          // Halaman tambah user baru
+$routes->group('user', ['filter' => 'login'], function($routes) {
+    $routes->get('/', 'User::index');                // Menampilkan daftar user
+    $routes->get('getTotalUsers', 'User::getTotalUsers'); // Mengambil total users dalam JSON
+    $routes->get('add', 'User::add');               // Halaman tambah user baru
+    $routes->post('add', 'User::saveuser');         // Proses tambah user dengan AJAX
+    $routes->delete('delete/(:num)', 'User::delete/$1'); // Proses hapus user dengan AJAX
+    $routes->get('edit/(:num)', 'User::edit/$1');   // Mendapatkan data user berdasarkan ID (untuk modal)
+    $routes->post('update', 'User::update');        // Proses update user setelah diedit
 });
+
+
 
 // Route untuk sub-fitur: Analytics
 $routes->group('analytics', ['filter' => 'login'], function($routes) {

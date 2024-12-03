@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Budgeting Admin </title>
+    <title>Star Admin2 </title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url('assets') ?>/vendors/feather/feather.css">
@@ -37,19 +37,12 @@
                     </button>
                 </div>
                 <div>
-                    <h5 class="fw-bold">Welcome Admin <?= session()->get('admin_name') ? esc(session()->get('admin_name')) : 'Guest'; ?></h5>
+                    <h5 style="font-size: 12px" class="fw-bold navbar-brand brand-logo">Welcome Admin <?= session()->get('admin_name') ? esc(session()->get('admin_name')) : 'Guest'; ?></h5>
                 </div>
             </div>
-
             <div class="navbar-menu-wrapper d-flex align-items-top">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item d-none d-lg-block">
-                        <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-                            <span class="input-group-addon input-group-prepend border-right">
-                                <span class="icon-calendar input-group-text calendar-icon"></span>
-                            </span>
-                            <input type="text" class="form-control">
-                        </div>
                     </li>
                     <li class="nav-item">
                         <form class="search-form" action="#">
@@ -57,15 +50,17 @@
                             <input type="search" class="form-control" placeholder="Search Here" title="Search here">
                         </form>
                     </li>
-
                     <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-                        <a class="nav-link" id="Logout" href="<?= site_url('/auth/logout') ?>" onclick="confirmLogout(event)">
+                        <a class="nav-link" id="Logout" href="<?= site_url('/logout') ?>" onclick="confirmLogout(event)">
                             <button type="button" class="btn btn-danger btn-rounded btn-fw">
                                 <i class="fa fa-sign-out"></i>
                             </button>
                         </a>
                     </li>
                 </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
             </div>
         </nav>
         <!-- partial -->
@@ -99,9 +94,6 @@
     <!-- plugins:js -->
     <script src="<?= base_url('assets') ?>/vendors/js/vendor.bundle.base.js"></script>
     <script src="<?= base_url('assets') ?>/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
@@ -111,6 +103,7 @@
     <script src="<?= base_url('assets') ?>/js/settings.js"></script>
     <script src="<?= base_url('assets') ?>/js/hoverable-collapse.js"></script>
     <script src="<?= base_url('assets') ?>/js/todolist.js"></script>
+    <script src="<?= base_url('assets') ?>/js/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?= base_url('assets') ?>/js/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -118,7 +111,6 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
-
     <script>
         function confirmLogout(event) {
             event.preventDefault(); // Mencegah redirect langsung

@@ -2,6 +2,7 @@
 
 <?= $this->section('content') ?>
 
+
 <div class="statistics-details d-flex align-items-center justify-content-between">
     <!-- Menampilkan total user -->
     <div>
@@ -22,7 +23,7 @@
     </div>
 </div>
 
-<button class="btn btn-success" id="addButton" onclick="window.location='<?= site_url('User/add') ?>'">Add Admin</button>
+<button class="btn btn-success" id="addButton" onclick="window.location='<?= site_url('user/add') ?>'">Add Admin</button>
 
 <!-- tabel user -->
 <div class="card-body">
@@ -38,45 +39,74 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="1"> 1 </td>
-                    <td colspan="4"> Herman Beck </td>
-                    <td colspan="4">raya@gmail.com</td>
-                    <td colspan="2">Admin</td>
-                    <td colspan="2"> 
-                        <button type="button" class="btn btn-success btn-rounded btn-icon">
-                        <i class="fa fa-user-pen"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-rounded btn-icon">
-                        <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td colspan="1"> 1 </td>
-                    <td colspan="4"> Herman Beck </td>
-                    <td colspan="4">raya@gmail.com</td>
-                    <td colspan="2">Admin</td>
-                    <td colspan="2"> 
-                        <button type="button" class="btn btn-success btn-rounded btn-icon">
-                        <i class="fa fa-user-pen"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-rounded btn-icon">
-                        <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+                <?php
+                $num = 1;
+                foreach ($data_user as $row):
+                ?>
+                    <tr>
+                        <td colspan="1"><?= $num++ ?></td>
+                        <td colspan="4"><?= $row['username'] ?></td>
+                        <td colspan="4"><?= $row['email'] ?></td>
+                        <td colspan="2"><?= $row['level_user'] ?></td>
+                        <td colspan="2">
+                            <button
+                                type="button"
+                                class="btn btn-success btn-rounded btn-icon edit-user-btn"
+                                data-id="<?= $row['id']; ?>"
+                                title="Edit User">
+                                <i class="fa fa-user-pen"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-danger btn-rounded btn-icon delete-user-btn"
+                                data-id="<?= $row['id']; ?>"
+                                title="Delete User">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
-</div>
+        <div class="modal fade" id="modalFormEdit" tabindex="-1" role="dialog" aria-labelledby="modalFormEditLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalFormEditLabel">Edit User</h5>
+                    </div>
+                    <form id="formEditUser">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="editId">
+                            <div class="form-group">
+                                <label for="editUsername">Username</label>
+                                <input type="text" name="username" class="form-control" id="editUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmail">Email</label>
+                                <input type="email" name="email" class="form-control" id="editEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPassword">Password</label>
+                                <input type="password" name="password" class="form-control" id="editPassword" placeholder="Leave blank to keep current password">
+                            </div>
+                            <div class="form-group">
+                                <label for="editRole">Role</label>
+                                <select name="role" id="editRole" class="form-control" required>
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveEditButton">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<!-- user cart -->
-<div class="card-body">
-    <h4 class="card-title"></h4>
-    <canvas id="barChart" width="369" height="184" style="display: block; box-sizing: border-box; height: 147px; width: 295px;"></canvas>
+    </div>
 </div>
 
 <!-- Tambahkan JavaScript -->
@@ -84,7 +114,7 @@
 <script>
     function fetchTotalUsers() {
         $.ajax({
-            url: "<?= site_url('User/getTotalUsers') ?>",
+            url: "<?= site_url('user/getTotalUsers') ?>",
             method: "GET",
             dataType: "json",
             success: function(data) {
@@ -152,5 +182,115 @@
         incrementPageView(); // Tambahkan page view ketika halaman dimuat
         fetchPageViews(); // Ambil total page views awal untuk ditampilkan
     });
+
+    $(document).on('click', '.delete-user-btn', function() {
+        var userId = $(this).data('id'); // Ambil ID user dari data-id tombol
+
+        // Konfirmasi SweetAlert
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request ke server
+                $.ajax({
+                    url: "<?= base_url('user/delete'); ?>/" + userId,
+                    type: 'DELETE',
+                    success: function(response) {
+                        Swal.fire(
+                            'Deleted!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Reload halaman setelah penghapusan
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire(
+                            'Failed!',
+                            xhr.responseJSON.message,
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        // Ketika tombol edit ditekan
+        $('.edit-user-btn').on('click', function() {
+            const id = $(this).data('id');
+
+            // Ambil data user berdasarkan ID dengan AJAX
+            $.ajax({
+                type: "GET",
+                url: `/user/edit/${id}`,
+                dataType: "json",
+                success: function(response) {
+                    if (response) {
+                        // Isi data di modal
+                        $('#editId').val(response.id);
+                        $('#editUsername').val(response.username);
+                        $('#editEmail').val(response.email);
+                        $('#editPassword').val(''); // Kosongkan field password
+                        $('#editRole').val(response.level_user);
+
+                        // Tampilkan modal
+                        $('#modalFormEdit').modal('show');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+
+        // Submit form edit user
+        $('#formEditUser').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: '/user/update',
+                data: $(this).serialize(),
+                dataType: "json",
+                beforeSend: function() {
+                    $('#saveEditButton').prop('disabled', true);
+                    $('#saveEditButton').html('<i class="fa fa-spin fa-spinner"></i> Saving...');
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: "Success!",
+                            text: response.message,
+                            icon: "success"
+                        }).then(() => {
+                            $('#modalFormEdit').modal('hide');
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.status + ": " + xhr.responseText);
+                },
+                complete: function() {
+                    $('#saveEditButton').prop('disabled', false);
+                    $('#saveEditButton').html('Save Changes');
+                }
+            });
+        });
+    });
 </script>
+<script src="<?= base_url('assets') ?>/js/chart.js"></script>
 <?= $this->endSection() ?>

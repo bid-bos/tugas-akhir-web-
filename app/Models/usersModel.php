@@ -15,6 +15,7 @@ class usersModel extends Model
         'username',
         'email',
         'password',
+        'level_user',
         'created_at',
         'updated_at',
     ];
